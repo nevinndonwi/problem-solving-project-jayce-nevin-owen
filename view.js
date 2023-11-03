@@ -61,6 +61,7 @@ $('.permbutton').click( function( e ) {
     let path = e.currentTarget.getAttribute('path');
     perm_dialog.attr('filepath', path)
     perm_dialog.dialog('open')
+    // open_advanced_dialog(perm_dialog.attr('filepath'))
     //open_permissions_dialog(path)
 
     // Deal with the fact that folders try to collapse/expand when you click on their permissions button:
@@ -69,6 +70,85 @@ $('.permbutton').click( function( e ) {
     emitter.dispatchEvent(new CustomEvent('userEvent', { detail: new ClickEntry(ActionEnum.CLICK, (e.clientX + window.pageXOffset), (e.clientY + window.pageYOffset), e.target.id,new Date().getTime()) }))
 });
 
+const current_task = $("#scenario_context").data("tag");
+// add clearer directions in the side-panel
+const sidebar = $("#sidepanel");
+console.log(sidebar);
+const ideas = $("<div id='help-list-69' class='help-list'><h3 class='help-title'>Read This Before Starting</h3></div>")
+sidebar.append(ideas);
+let steps;
+switch (current_task) {
+    case "remove_direct_permission":
+        steps = ["Click on the lock next to <strong>presentation_documents</strong>.", "Select 'Add...'", "Select 'employee4'", "Select 'Ok'", "Click ok."]
+        break;
+    case "add_new_user":
+        steps = ["Click on the lock next to <strong>importantfile.txt</strong>.", "Select 'employee3'", "Remove all of their 'allow' permissions.", "Select 'Deny' for 'all_permissions'.", "Click ok."]
+        break;
+    case "add_full_permissions":
+        steps = ["Click on the lock next to <strong>presentation documents</strong>.", "Select 'Add...'","Select 'new_manager'", "click ok", "click 'new manager' under the group or users names column",
+        "Look at the allow column and click the checkbox next to full_control", "Click ok."]
+        break;
+
+
+
+    case "remove_inherited_permission":
+        steps = ["Click on the lock next to <strong>importantfile.txt</strong>.","Select 'employee 3'", "click the check box that is next to modify <strong>that is also under the deny column</strong>", "Click ok."]
+        break;
+
+    case "intern_permissions":
+            steps = ["Click on the lock next to <strong>intern_subproject</strong>.", "Select 'intern'", "click the check box that is under the allow column that is also next to 'write'", 
+            "Click ok."]
+            break;
+
+    case "remove_user_with_inheritance":
+        steps = ["Click on the lock next to <strong>importantfile.txt</strong>.", "Select 'employee 3'", "click the check box that is next to the full control column <strong>and is also under the deny column</strong>",  "Click ok."]
+        break;
+
+    case "restrict_group_member":
+        steps = ["Click on the lock next to <strong>importantfile.txt</strong>.",
+        "click 'advanced'",
+            "click edit", 
+            "Click the change button.",
+            "Select 'employee 3'",
+        "click ok",
+        " <strong>(***CHECK THIS CAREFULLY***)</strong>Under the allow column, check every box that has the word 'read'",
+            "Under the deny column, check every box that was <strong>not</strong> checked on the left", 
+            "Click ok.",
+            "close all the popups"]
+        break;
+    
+        case "let_ta_modify":
+            steps = ["Click on the lock next to <strong>Lecture_notes</strong>.", "Click Advanced", "click the bottommost checkbox",  "Click yes", "Click ok.", "Close the popups."]
+            break;
+
+        case "lost_inheritance":
+            steps = ["Click on the lock next to <strong>Lecture_notes</strong>.", "Click Advanced", "click the bottommost checkbox",  "Click yes", "Click ok.", "Close the popups."]
+            break;
+
+
+    default:
+        break;
+}
+//validate_and_get_logs();
+const specificInstructions = $("<ol id='spec-instruct'> </ol>");
+ideas.append(specificInstructions);
+
+let index = 1;
+steps.forEach(step => {
+    const instruction = $(`<li id='step-${index}'> ${step} </li>`);
+    specificInstructions.append(instruction);
+});
+
+
 
 // ---- Assign unique ids to everything that doesn't have an ID ----
 $('#html-loc').find('*').uniqueId() 
+
+
+
+
+
+
+
+
+
